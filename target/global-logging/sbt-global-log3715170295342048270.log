@@ -1,0 +1,3 @@
+[debug] > Exec({file:/D:/Documents/datasource/}datasource/test, None, None)
+[debug] Evaluating tasks: Test / test
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true

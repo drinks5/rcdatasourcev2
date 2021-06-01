@@ -1,0 +1,141 @@
+[debug] > Exec(compile, None, None)
+[debug] Evaluating tasks: Compile / compile
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 2 Scala sources to D:\Documents\datasource\target\scala-2.12\classes ...
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:9:37: object v2 is not a member of package org.apache.spark.sql.sources
+[error] import org.apache.spark.sql.sources.v2.reader._
+[error]                                     ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:10:37: object v2 is not a member of package org.apache.spark.sql.sources
+[error] import org.apache.spark.sql.sources.v2.writer.{DataSourceWriter, DataWriter, DataWriterFactory, WriterCommitMessage}
+[error]                                     ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:11:37: object v2 is not a member of package org.apache.spark.sql.sources
+[error] import org.apache.spark.sql.sources.v2.{DataSourceOptions, DataSourceV2, ReadSupport, WriteSupport}
+[error]                                     ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:30:28: not found: type DataSourceV2
+[error] class JdbcSourceV2 extends DataSourceV2 with ReadSupport with WriteSupport {
+[error]                            ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:30:46: not found: type ReadSupport
+[error] class JdbcSourceV2 extends DataSourceV2 with ReadSupport with WriteSupport {
+[error]                                              ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:30:63: not found: type WriteSupport
+[error] class JdbcSourceV2 extends DataSourceV2 with ReadSupport with WriteSupport {
+[error]                                                               ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:31:29: not found: type DataSourceOptions
+[error]   def createReader(options: DataSourceOptions) = new JdbcDataSourceReader(
+[error]                             ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:57:11: not found: type DataSourceReader
+[error]   extends DataSourceReader with SupportsPushDownRequiredColumns
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:57:33: not found: type SupportsPushDownRequiredColumns
+[error]   extends DataSourceReader with SupportsPushDownRequiredColumns
+[error]                                 ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:58:10: not found: type SupportsPushDownFilters
+[error]     with SupportsPushDownFilters {
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:42:68: not found: type DataSourceWriter
+[error]                              options: DataSourceOptions): Optional[DataSourceWriter] = Optional.of(new JdbcDataSourceWriter(
+[error]                                                                    ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:42:39: not found: type DataSourceOptions
+[error]                              options: DataSourceOptions): Optional[DataSourceWriter] = Optional.of(new JdbcDataSourceWriter(
+[error]                                       ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:172:11: not found: type DataSourceWriter
+[error]   extends DataSourceWriter {
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:110:11: not found: type DataReaderFactory
+[error]   extends DataReaderFactory[Row] {
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:72:23: not found: type DataReaderFactory
+[error]         .asInstanceOf[DataReaderFactory[Row]]
+[error]                       ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:124:11: not found: type DataReader
+[error]   extends DataReader[Row] {
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:132:41: type mismatch;
+[error]  found   : java.sql.Connection
+[error]  required: Null
+[error]       conn = DriverManager.getConnection(url, user, password)
+[error]                                         ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:140:23: value prepareStatement is not a member of Null
+[error]       val stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,
+[error]                       ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:146:8: value next is not a member of Null
+[error]     rs.next()
+[error]        ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:151:23: value getInt is not a member of Null
+[error]       case "id" => rs.getInt("id")
+[error]                       ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:152:29: value getString is not a member of Null
+[error]       case "emp_name" => rs.getString("emp_name")
+[error]                             ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:153:29: value getString is not a member of Null
+[error]       case "dep_name" => rs.getString("dep_name")
+[error]                             ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:154:27: value getBigDecimal is not a member of Null
+[error]       case "salary" => rs.getBigDecimal("salary")
+[error]                           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:155:24: value getBigDecimal is not a member of Null
+[error]       case "age" => rs.getBigDecimal("age")
+[error]                        ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:161:10: value close is not a member of Null
+[error]     conn.close()
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:188:11: not found: type DataWriterFactory
+[error]   extends DataWriterFactory[Row] {
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:176:39: not found: type WriterCommitMessage
+[error]   override def commit(messages: Array[WriterCommitMessage]): Unit = Unit
+[error]                                       ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:178:38: not found: type WriterCommitMessage
+[error]   override def abort(messages: Array[WriterCommitMessage]): Unit = Unit
+[error]                                      ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:202:11: not found: type DataWriter
+[error]   extends DataWriter[Row] {
+[error]           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:210:41: type mismatch;
+[error]  found   : java.sql.Connection
+[error]  required: Null
+[error]       conn = DriverManager.getConnection(url, user, password)
+[error]                                         ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:211:12: value setAutoCommit is not a member of Null
+[error]       conn.setAutoCommit(false)
+[error]            ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:215:19: value prepareStatement is not a member of Null
+[error]       stmt = conn.prepareStatement(s"REPLACE INTO $table ($columns) VALUES ($placeholders)")
+[error]                   ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:220:27: value setInt is not a member of Null
+[error]         case "id" => stmt.setInt(index + 1, record.getInt(index))
+[error]                           ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:221:33: value setString is not a member of Null
+[error]         case "emp_name" => stmt.setString(index + 1, record.getString(index))
+[error]                                 ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:222:33: value setString is not a member of Null
+[error]         case "dep_name" => stmt.setString(index + 1, record.getString(index))
+[error]                                 ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:223:31: value setBigDecimal is not a member of Null
+[error]         case "salary" => stmt.setBigDecimal(index + 1, record.getDecimal(index))
+[error]                               ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:224:28: value setBigDecimal is not a member of Null
+[error]         case "age" => stmt.setBigDecimal(index + 1, record.getDecimal(index))
+[error]                            ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:229:10: value executeUpdate is not a member of Null
+[error]     stmt.executeUpdate()
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:232:26: not found: type WriterCommitMessage
+[error]   override def commit(): WriterCommitMessage = {
+[error]                          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:233:10: value commit is not a member of Null
+[error]     conn.commit()
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:234:10: value close is not a member of Null
+[error]     conn.close()
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:239:10: value rollback is not a member of Null
+[error]     conn.rollback()
+[error]          ^
+[error] D:\Documents\datasource\src\main\scala\fudan\JDBCSourceV2.scala:240:10: value close is not a member of Null
+[error]     conn.close()
+[error]          ^
+[error] 43 errors found
+[error] (Compile / compileIncremental) Compilation failed
+[error] Total time: 17 s, completed 2021-6-1 0:08:14
+[debug] > Exec(idea-shell, None, None)
