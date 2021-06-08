@@ -9,6 +9,10 @@ import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable
 import org.apache.hadoop.hive.serde2.ColumnProjectionUtils
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.io.LongWritable
+import org.apache.spark.sql.{SparkSession}
+//import org.apache.spark.sql.sources.v2.reader._
+import org.apache.spark.sql.connector.catalog
+//import org.apache.spark.sql.sourcses.v2
 
 
 object RC extends App {
@@ -18,10 +22,24 @@ object RC extends App {
   val conf = new Configuration()
   val src = new Path("./rcfile")
   val column = 4
-  createRcFile(src, conf)
-  readRcFile(src, conf);
+  //createRcFile(src, conf)
+  //readRcFile(src, conf);
+  val sparkSession = SparkSession.builder
+    .master("local[2]")
+    .appName("example")
+    .getOrCreate()
 
-  private def createRcFile(src: Path, conf: Configuration) {
+  val simpleCsvDf = sparkSession.read
+    .format("fudan")
+    .load("src/main/resources/adult.csv")
+
+  simpleCsvDf.printSchema()
+  simpleCsvDf.show()
+  println(
+    "number of partitions in simple csv source is " + simpleCsvDf.rdd.getNumPartitions)
+  sparkSession.stop()
+
+  private def ccreateRcFile(src: Path, conf: Configuration) {
     conf.setInt(RCFile.COLUMN_NUMBER_CONF_STR, column); // 列数
     conf.setInt(RCFile.Writer.COLUMNS_BUFFER_SIZE_CONF_STR, 4 * 1024 * 1024); // 决定行数参数一
     conf.setInt(RCFile.RECORD_INTERVAL_CONF_STR, 3); // 决定行数参数二

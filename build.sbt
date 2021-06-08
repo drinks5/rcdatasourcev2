@@ -2,7 +2,7 @@ name := "fudan"
 
 version := "0.1"
 
-scalaVersion := "2.12.14"
+scalaVersion := "2.12.13"
 
 developers := List(
   Developer(id = "fudan", name = "drinks", email = "20262010072@fudan.edu.cn", url = url("http://fudan.edu.cn"))
@@ -58,8 +58,8 @@ lazy val excludeScalanlp = ExclusionRule(organization = "org.scalanlp")
 
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % sparkVersion.value,
-  "org.apache.spark" %% "spark-sql" % sparkVersion.value,
+  "org.apache.spark" %% "spark-core" % sparkVersion.value % "provided",
+  "org.apache.spark" %% "spark-sql" % sparkVersion.value % "provided",
   "org.apache.spark" %% "spark-mllib" % sparkVersion.value,
   "org.apache.spark" %% "spark-hive" % sparkVersion.value,
   "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion.value,
