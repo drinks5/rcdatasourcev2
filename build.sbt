@@ -1,11 +1,11 @@
-name := "fudan"
+name := "rc"
 
 version := "0.1"
 
 scalaVersion := "2.12.13"
 
 developers := List(
-  Developer(id = "fudan", name = "drinks", email = "20262010072@fudan.edu.cn", url = url("http://fudan.edu.cn"))
+  Developer(id = "rc", name = "drinks", email = "20262010072@fudan.edu.cn", url = url("http://fudan.edu.cn"))
 )
 
 crossScalaVersions := Seq(

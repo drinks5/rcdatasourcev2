@@ -1,4 +1,4 @@
-package fudan
+package rc
 
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hive.ql.io.RCFile
@@ -9,37 +9,63 @@ import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable
 import org.apache.hadoop.hive.serde2.ColumnProjectionUtils
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.io.LongWritable
-import org.apache.spark.sql.{SparkSession}
-//import org.apache.spark.sql.sources.v2.reader._
-import org.apache.spark.sql.connector.catalog
-//import org.apache.spark.sql.sourcses.v2
+import org.apache.log4j.{Level, LogManager, Logger}
+import org.apache.spark.sql.SparkSession
+
 
 
 object RC extends App {
+
+
   val dir = System.getProperty("user.home")
   System.setProperty("hadoop.home.dir", dir)
 
   val conf = new Configuration()
-  val src = new Path("./rcfile")
-  val column = 4
+  val path = "src/main/resources/rc/**"
+  val src = new Path(path)
   //createRcFile(src, conf)
-  //readRcFile(src, conf);
-  val sparkSession = SparkSession.builder
+
+  val session = SparkSession.builder
     .master("local[2]")
-    .appName("example")
+    .appName("rc")
     .getOrCreate()
+  val sc = session.sparkContext
+  Logger.getRootLogger.setLevel(Level.INFO)
+  Logger.getLogger("spark").setLevel(Level.ERROR)
+  Logger.getLogger("org").setLevel(Level.ERROR)
+  Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
+  Logger.getLogger("org.sparkproject").setLevel(Level.WARN)
+  Logger.getLogger("sparkproject").setLevel(Level.WARN)
+  LogManager.getRootLogger.setLevel(Level.ERROR)
+  sc.setLogLevel("ERROR")
 
-  val simpleCsvDf = sparkSession.read
-    .format("fudan")
-    .load("src/main/resources/adult.csv")
 
-  simpleCsvDf.printSchema()
-  simpleCsvDf.show()
+  /*
+  val schema = StructType(Array(
+    StructField("project", StringType, true),
+    StructField("article", BooleanType, true),
+    StructField("requests", DoubleType, true),
+    StructField("bytes_served", DateType, true))
+  )
+  */
+  val df = session.read
+    .format("rc")
+    .load(path)
+  println("name\n-----\n")
+  df.select("name").show()
+
+  println("print schema\n-----\n")
+  df.printSchema()
+  println("show\n-----\n")
+  df.show()
   println(
-    "number of partitions in simple csv source is " + simpleCsvDf.rdd.getNumPartitions)
-  sparkSession.stop()
+    "number of partitions in simple csv source is " + df.rdd.getNumPartitions)
+  session.stop()
 
-  private def ccreateRcFile(src: Path, conf: Configuration) {
+  //readRcFile(src, conf);
+
+  private def createRcFile(src: Path, conf: Configuration) {
+    val column = 4
     conf.setInt(RCFile.COLUMN_NUMBER_CONF_STR, column); // 列数
     conf.setInt(RCFile.Writer.COLUMNS_BUFFER_SIZE_CONF_STR, 4 * 1024 * 1024); // 决定行数参数一
     conf.setInt(RCFile.RECORD_INTERVAL_CONF_STR, 3); // 决定行数参数二
@@ -47,18 +73,18 @@ object RC extends App {
     val writer = new RCFile.Writer(fs, conf, src)
     val cols = new BytesRefArrayWritable(column); // 列数，可以动态获取
     var count = 0;
-    val strings = List("1,true,123.123,2012-10-24 08:55:00",
-      "2,false,1243.5,2012-10-25 13:40:00",
-      "3,false,24453.325,2008-08-22 09:33:21.123",
-      "4,false,243423.325,2007-05-12 22:32:21.33454",
-      "5,true,243.325,1953-04-22 09:11:33")
+    val strings = List("name,age,gender,province",
+      "黄俊,28,male,湖南",
+      "叶从周,25,male,上海",
+      "周舟,25,male,江苏",
+      "罗力宇,25,male,上海")
     strings.map(x => {
       val splits = x.split(",")
       count = 0
       splits.map(split => {
         val byte = Bytes.toBytes(split)
         val col = new BytesRefWritable(byte, 0, byte.length)
-        println(f"count: $count, col: $col")
+        println(f"count: $count, col: $split")
         cols.set(count, col)
         count += 1
       })
@@ -79,8 +105,10 @@ object RC extends App {
     ColumnProjectionUtils.setFullyReadColumns(conf);
     val fs = FileSystem.get(conf);
     val reader = new RCFile.Reader(fs, src, conf);
-    // readerByRow(reader);
-    readerByCol(reader);
+     readerByRow(reader);
+    //readerByCol(reader);
+    val metadata = reader.getMetadata
+      println("metadata is :" + metadata)
     reader.close();
   }
 
@@ -89,6 +117,21 @@ object RC extends App {
     val rowID = new LongWritable();
     // 一个行组的数据
     val cols = new BytesRefArrayWritable();
+    var brw: BytesRefWritable = null;
+    while (reader.next(rowID)) {
+      reader.getCurrentRow(cols)
+      brw = null
+      val sb = new StringBuilder()
+      for (i <- 0 to (cols.size() - 1))
+      {
+        brw = cols.get(i);
+        // 根据start 和 length 获取指定行-列数据
+        sb.append(Bytes.toString(brw.getData(), brw.getStart(),
+          brw.getLength()));
+        if (i < cols.size() - 1) sb.append("\t")
+      }
+      println(sb.toString());
+    }
   }
 
   def readerByCol(reader: RCFile.Reader) {
